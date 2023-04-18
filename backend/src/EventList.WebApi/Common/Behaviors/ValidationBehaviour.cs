@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 
+using ValidationException = EventList.WebApi.Common.Exceptions.ValidationException;
+
 namespace EventList.WebApi.Common.Behaviors;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

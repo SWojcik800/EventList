@@ -1,6 +1,6 @@
 ﻿using EventList.WebApi.Common.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using EventList.WebApi.Common.Security;
 using System.Reflection;
 
 namespace EventList.WebApi.Common.Behaviors;

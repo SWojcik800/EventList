@@ -8,12 +8,11 @@ namespace EventList.WebApi.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Lecture> builder)
         {
+
             builder.Ignore(e => e.DomainEvents);
 
             builder
                 .OwnsOne(b => b.Location);
-
-            // TODO: Add required attributtes to fields and other entities configurations
         }
     }
 }

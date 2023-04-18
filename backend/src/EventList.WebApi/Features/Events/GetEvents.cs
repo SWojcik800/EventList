@@ -43,8 +43,6 @@ public class EventDto : IMapFrom<Event>
     public DateTime StartDate { get; set; }
 
     public IList<LectureDto> Lectures { get; set; }
-
-    // TODO: Create map
 }
 
 public class LectureDto : IMapFrom<Lecture>
@@ -82,12 +80,12 @@ public class LecturerDto : IMapFrom<Lecturer>
 }
 
 
-internal sealed class GetTodosQueryHandler : IRequestHandler<GetEventsQuery, EventsVm>
+internal sealed class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, EventsVm>
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetTodosQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetEventsQueryHandler(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
