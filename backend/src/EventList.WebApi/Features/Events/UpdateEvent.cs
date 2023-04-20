@@ -16,8 +16,6 @@ public class UpdateEventController : ApiControllerBase
     [HttpPut("/api/events/{id}")]
     public async Task<ActionResult> Update(int id, UpdateEventCommand command)
     {
-        // TODO: remove id from request body
-
         if (id != command.Id)
         {
             return BadRequest();
