@@ -5,12 +5,14 @@ using EventList.WebApi.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace EventList.WebApi.Features.Events;
 
 public class DeleteEventController : ApiControllerBase
 {
     [HttpDelete("/api/events/{id}")]
+    [SwaggerOperation(Tags = new[] { "Events" })]
     public async Task<ActionResult> Delete(int id)
     {
         await Mediator.Send(new DeleteEventCommand { Id = id });
