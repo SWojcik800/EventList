@@ -5,6 +5,7 @@ using EventList.WebApi.Common.Mappings;
 using EventList.WebApi.Entities;
 using EventList.WebApi.Infrastructure.Persistence;
 using EventList.WebApi.ValueObjects;
+using log4net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -86,15 +87,18 @@ internal sealed class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, Ev
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly ILogger<GetEventsQueryHandler> _logger;
 
-    public GetEventsQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetEventsQueryHandler(ApplicationDbContext context, IMapper mapper, ILogger<GetEventsQueryHandler> logger)
     {
         _context = context;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<EventsVm> Handle(GetEventsQuery request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Get Events.");
         return new EventsVm
         {
             Events = await _context.Events

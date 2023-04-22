@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Logging.AddLog4Net();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
