@@ -8,12 +8,14 @@ using EventList.WebApi.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace EventList.WebApi.Features.Events;
 
 public class GetEventsController : ApiControllerBase
 {
     [HttpGet("/api/events")]
+    [SwaggerOperation(Tags = new[] { "Events" })]
     public async Task<ActionResult<EventsVm>> Get()
     {
         return await Mediator.Send(new GetEventsQuery());

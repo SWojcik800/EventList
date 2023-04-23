@@ -5,12 +5,14 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace EventList.WebApi.Features.Events
 {
     public class CreateEventController : ApiControllerBase
     {
         [HttpPost("/api/events")]
+        [SwaggerOperation(Tags = new[] { "Events" })]
         public async Task<ActionResult<int>> Create(CreateEventCommand command)
         {
             return await Mediator.Send(command);

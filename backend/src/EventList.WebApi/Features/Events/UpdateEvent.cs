@@ -9,11 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using EventList.WebApi.Entities;
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace EventList.WebApi.Features.Events;
 
 public class UpdateEventController : ApiControllerBase
 {
     [HttpPut("/api/events/{id}")]
+    [SwaggerOperation(Tags = new[] { "Events" })]
     public async Task<ActionResult> Update(int id, UpdateEventCommand command)
     {
         if (id != command.Id)
