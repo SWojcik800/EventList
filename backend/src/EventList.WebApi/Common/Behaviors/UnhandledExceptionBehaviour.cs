@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using EventList.WebApi.Common.Exceptions;
+using MediatR;
 
 namespace EventList.WebApi.Common.Behaviors
 {
@@ -16,6 +17,10 @@ namespace EventList.WebApi.Common.Behaviors
             try
             {
                 return await next();
+            }
+            catch (ValidationException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
