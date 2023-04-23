@@ -1,9 +1,11 @@
 using EventList.WebApi;
+using EventList.WebApi.Web.Middleware;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped(typeof(ErrorHandlingMiddleware));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -39,14 +41,7 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/error-development");
-}
-else
-{
-    app.UseExceptionHandler("/error");
-}
+app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
 app.UseAuthorization();
 
