@@ -19,11 +19,19 @@ namespace EventList.WebApi.Web.Middleware
             {
                 await WriteErrorToBody(context, e.Message, 404);
             }
+            catch (ValidationException e)
+            {
+                await WriteErrorListToBody(context, e.Errors, 400);
+            }
             catch (ForbiddenAccessException e)
             {
                 await WriteErrorToBody(context, e.Message, 403);
             }
             catch (ApplicationErrorException e)
+            {
+                await WriteErrorToBody(context, e.Message, 500);
+            }
+            catch (Exception e)
             {
                 await WriteErrorToBody(context, e.Message, 500);
             }
@@ -33,9 +41,22 @@ namespace EventList.WebApi.Web.Middleware
         private async Task WriteErrorToBody(HttpContext context, string errorMessage, int statusCode)
         {
             context.Response.StatusCode = statusCode;
-            var apiError = new ErrorApiResponse(errorMessage);
+            var errorDict = new Dictionary<string, string[]>();
+            errorDict.Add("Value", new string[] { errorMessage });
+            await context.Response.WriteAsJsonAsync(new
+            {
+                errors = errorDict
+            });
+        }
 
-            await context.Response.WriteAsJsonAsync(apiError);
+        private async Task WriteErrorListToBody(HttpContext context, IDictionary<string, string[]> errorsList, int statusCode)
+        {
+            context.Response.StatusCode = statusCode;
+
+            await context.Response.WriteAsJsonAsync(new
+            {
+                errors = errorsList
+            });
         }
     }
 }
