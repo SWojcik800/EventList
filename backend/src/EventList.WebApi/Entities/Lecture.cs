@@ -4,8 +4,36 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventList.WebApi.Entities
 {
-    public class Lecture : AuditableEntity, IHasDomainEvent
+    public sealed class Lecture : AuditableEntity, IHasDomainEvent
     {
+        private Lecture()
+        {
+            //For EF Core 
+        }
+
+        public Lecture(
+            int eventId,
+            IList<Lecturer> lecturers,
+            Location location,
+            DateTime startTime,
+            DateTime endTime,
+            string? name,
+            string? topic,
+            string? description,
+            Event @event)
+        {
+            EventId = eventId;
+            Lecturers = lecturers;
+            Location = location;
+            StartTime = startTime;
+            EndTime = endTime;
+            Name = name;
+            Topic = topic;
+            Description = description;
+            Finished = false;
+            Event = @event;
+        }
+
         public int Id { get; set; }
 
         public int EventId { get; set; }
@@ -16,7 +44,7 @@ namespace EventList.WebApi.Entities
 
         public DateTime StartTime { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public DateTime EndTime { get; set; }
 
         public string? Name { get; set; }
 
@@ -43,10 +71,6 @@ namespace EventList.WebApi.Entities
 
         public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
 
-        public void Configure(EntityTypeBuilder<Lecture> builder)
-        {
-            builder.Ignore(e => e.DomainEvents);
-        }
     }
 
     public class LectureFinishedEvent : DomainEvent
