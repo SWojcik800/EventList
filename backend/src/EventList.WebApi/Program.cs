@@ -1,4 +1,5 @@
 using EventList.WebApi;
+using EventList.WebApi.Web.Middleware;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddWeb();
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
@@ -39,14 +41,7 @@ app.UseCors();
 
 app.UseHttpsRedirection();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/error-development");
-}
-else
-{
-    app.UseExceptionHandler("/error");
-}
+app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
 app.UseAuthorization();
 

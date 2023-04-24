@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using EventList.WebApi.Common.Exceptions;
+using MediatR;
 
 namespace EventList.WebApi.Common.Behaviors
 {
