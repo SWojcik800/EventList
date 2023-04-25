@@ -1,4 +1,5 @@
 ﻿using EventList.WebApi.Common;
+using EventList.WebApi.Common.Interfaces;
 using EventList.WebApi.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,7 +31,6 @@ namespace EventList.WebApi.Entities
             Name = name;
             Topic = topic;
             Description = description;
-            Finished = false;
             Event = @event;
         }
 
@@ -52,35 +52,32 @@ namespace EventList.WebApi.Entities
 
         public string? Description { get; set; }
 
-        private bool _finished;
-        public bool Finished
-        {
-            get => _finished;
-            set
-            {
-                if (value && _finished == false)
-                {
-                    DomainEvents.Add(new LectureFinishedEvent(this));
-                }
-
-                _finished = value;
-            }
-        }
+        public bool IsFinished(IDateTime dateTimeProvider)
+            => EndTime > dateTimeProvider.Now;
 
         public Event Event { get; set; } = null!;
 
         public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
 
-    }
-
-    public class LectureFinishedEvent : DomainEvent
-    {
-        public LectureFinishedEvent(Lecture lecture)
+        public void ChangeLecturers(IList<Lecturer> lecturers)
         {
-            Lecture = lecture;
+            Lecturers = lecturers;
+            var changedIds = lecturers.Select(l => l.Id)
+                .ToList();
+
+            DomainEvents.Add(new LecturersChangedEvent(
+                changedIds
+            ));
         }
 
-        public Lecture Lecture { get; }
+    }
 
+    public sealed class LecturersChangedEvent : DomainEvent
+    {
+        public IReadOnlyCollection<int> LecturersIds { get;}
+        public LecturersChangedEvent(IList<int> lecturersIds) : base()
+        {
+            LecturersIds = new List<int>(lecturersIds) { };
+        }
     }
 }
