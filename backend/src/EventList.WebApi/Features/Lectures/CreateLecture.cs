@@ -13,7 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace EventList.WebApi.Features.Lectures
 {
     #region Api Endpoints
-    public sealed class CreateCreateLectureController : ApiControllerBase
+    public sealed class CreateLectureController : ApiControllerBase
     {
         [HttpPost("/api/lectures")]
         [SwaggerOperation(Tags = new[] { "Lectures" })]
@@ -97,7 +97,7 @@ namespace EventList.WebApi.Features.Lectures
                 .Where(l => request.LecturersIds.Contains(l.Id))
                 .ToListAsync(cancellationToken);
 
-            var allLecturersFound = lecturers.Count() == request.LecturersIds.Count();
+            var allLecturersFound = lecturers.Count() == request.LecturersIds.Distinct().Count();
 
             if (!allLecturersFound)
                 throw new NotFoundException("Lecturer", request.LecturersIds);

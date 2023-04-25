@@ -1,6 +1,4 @@
-﻿using EventList.WebApi.Common.Mappings;
-using EventList.WebApi.Entities;
-using EventList.WebApi.ValueObjects;
+﻿using EventList.WebApi.ValueObjects;
 
 namespace EventList.WebApi.Features.Lectures.Dtos
 {
