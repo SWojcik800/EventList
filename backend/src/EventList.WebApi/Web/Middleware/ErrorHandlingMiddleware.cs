@@ -8,6 +8,12 @@ namespace EventList.WebApi.Web.Middleware
     /// </summary>
     public sealed class ErrorHandlingMiddleware : IMiddleware
     {
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
+
+        public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
+        {
+            _logger = logger;
+        }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
