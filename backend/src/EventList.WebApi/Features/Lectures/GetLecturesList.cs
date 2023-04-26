@@ -58,7 +58,7 @@ namespace EventList.WebApi.Features.Lectures
         {
             var lectureDtos = await _context.Lectures.AsNoTracking()
                 .Include(l => l.Lecturers)
-                .Where(l => l.EndTime <= _dateTimeProvider.Now)
+                .Where(l => l.EndTime >= _dateTimeProvider.Now)
                 .ProjectTo<UserLectureDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
