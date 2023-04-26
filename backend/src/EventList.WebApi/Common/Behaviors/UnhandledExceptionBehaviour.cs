@@ -18,10 +18,6 @@ namespace EventList.WebApi.Common.Behaviors
             {
                 return await next();
             }
-            catch (ValidationException ex)
-            {
-                throw ex;
-            }
             catch (Exception ex)
             {
                 var requestName = typeof(TRequest).Name;
