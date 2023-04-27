@@ -53,7 +53,7 @@ namespace EventList.WebApi.Entities
         public string? Description { get; set; }
 
         public bool IsFinished(IDateTime dateTimeProvider)
-            => EndTime > dateTimeProvider.Now;
+            => EndTime < dateTimeProvider.Now;
 
         public Event Event { get; set; } = null!;
 
