@@ -73,7 +73,6 @@ namespace EventList.WebApi.Features.Events
             var entity = new Event { Name = request.Name, StartDate = request.StartDate };
 
             _context.Events.Add(entity);
-
             await _context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;

@@ -1,11 +1,39 @@
 ﻿using EventList.WebApi.Common;
+using EventList.WebApi.Common.Interfaces;
 using EventList.WebApi.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventList.WebApi.Entities
 {
-    public class Lecture : AuditableEntity, IHasDomainEvent
+    public sealed class Lecture : AuditableEntity, IHasDomainEvent
     {
+        private Lecture()
+        {
+            //For EF Core 
+        }
+
+        public Lecture(
+            int eventId,
+            IList<Lecturer> lecturers,
+            Location location,
+            DateTime startTime,
+            DateTime endTime,
+            string? name,
+            string? topic,
+            string? description,
+            Event @event)
+        {
+            EventId = eventId;
+            Lecturers = lecturers;
+            Location = location;
+            StartTime = startTime;
+            EndTime = endTime;
+            Name = name;
+            Topic = topic;
+            Description = description;
+            Event = @event;
+        }
+
         public int Id { get; set; }
 
         public int EventId { get; set; }
@@ -16,7 +44,7 @@ namespace EventList.WebApi.Entities
 
         public DateTime StartTime { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public DateTime EndTime { get; set; }
 
         public string? Name { get; set; }
 
@@ -24,39 +52,32 @@ namespace EventList.WebApi.Entities
 
         public string? Description { get; set; }
 
-        private bool _finished;
-        public bool Finished
-        {
-            get => _finished;
-            set
-            {
-                if (value && _finished == false)
-                {
-                    DomainEvents.Add(new LectureFinishedEvent(this));
-                }
-
-                _finished = value;
-            }
-        }
+        public bool IsFinished(IDateTime dateTimeProvider)
+            => EndTime < dateTimeProvider.Now;
 
         public Event Event { get; set; } = null!;
 
         public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
 
-        public void Configure(EntityTypeBuilder<Lecture> builder)
+        public void ChangeLecturers(IList<Lecturer> lecturers)
         {
-            builder.Ignore(e => e.DomainEvents);
+            Lecturers = lecturers;
+            var changedIds = lecturers.Select(l => l.Id)
+                .ToList();
+
+            DomainEvents.Add(new LecturersChangedEvent(
+                changedIds
+            ));
         }
+
     }
 
-    public class LectureFinishedEvent : DomainEvent
+    public sealed class LecturersChangedEvent : DomainEvent
     {
-        public LectureFinishedEvent(Lecture lecture)
+        public IReadOnlyCollection<int> LecturersIds { get;}
+        public LecturersChangedEvent(IList<int> lecturersIds) : base()
         {
-            Lecture = lecture;
+            LecturersIds = new List<int>(lecturersIds) { };
         }
-
-        public Lecture Lecture { get; }
-
     }
 }

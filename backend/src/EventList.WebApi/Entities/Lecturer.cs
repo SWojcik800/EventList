@@ -6,11 +6,12 @@ namespace EventList.WebApi.Entities
     {
         public int Id { get; set; }
 
-        public int LectureId { get; set; }
+        public IList<Lecture> Lectures { get; set; }
 
         public string? Name { get; set; }
 
         public string? Description { get; set; }
+        
 
     }
 }
