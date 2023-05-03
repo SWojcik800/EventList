@@ -6,6 +6,7 @@ using EventList.WebApi.ValueObjects;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace EventList.WebApi.Features.Lecturers
@@ -56,6 +57,11 @@ namespace EventList.WebApi.Features.Lecturers
         public async Task<int> Handle(CreateLecturerCommand request, CancellationToken cancellationToken)
         {
             var lecturer = new Lecturer(request.Name, request.Description);
+
+            var isNameUnique = await _context.Lecturers.AllAsync(l => l.Name != lecturer.Name, cancellationToken);
+
+            if (!isNameUnique)
+                throw new ApplicationErrorException($"Lecturer with name {lecturer.Name} already exists");
 
             await _context.Lecturers.AddAsync(lecturer);
             await _context.SaveChangesAsync(cancellationToken);

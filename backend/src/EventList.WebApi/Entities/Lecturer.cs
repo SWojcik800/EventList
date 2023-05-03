@@ -1,4 +1,6 @@
 ﻿using EventList.WebApi.Common;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace EventList.WebApi.Entities
 {
@@ -8,6 +10,9 @@ namespace EventList.WebApi.Entities
         {
             //For EF Core 
         }
+
+        private static readonly Regex _whitespaceRegex = new Regex(@"\s+");
+        private string _name;
 
         public Lecturer(string? name, string? description)
         {
@@ -19,8 +24,20 @@ namespace EventList.WebApi.Entities
 
         public IList<Lecture> Lectures { get; private set; }
 
-        public string? Name { get; set; }
+        public string? Name { 
+            get => _name; 
+            set
+            {
+                _name = NormalizeName(value);
+            } 
+        }
 
         public string? Description { get; set; }
+
+        private string NormalizeName(string inputName)
+        {
+            var normalizedName = _whitespaceRegex.Replace(inputName.Trim(), " ");
+            return normalizedName;
+        }
     }
 }
