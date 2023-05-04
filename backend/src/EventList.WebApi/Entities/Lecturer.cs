@@ -34,6 +34,11 @@ namespace EventList.WebApi.Entities
 
         public string? Description { get; set; }
 
+        public void UpdateLectures(IList<Lecture> lectures)
+        {
+            Lectures = lectures;
+        }
+
         private string NormalizeName(string inputName)
         {
             var normalizedName = _whitespaceRegex.Replace(inputName.Trim(), " ");
