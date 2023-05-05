@@ -58,6 +58,13 @@ namespace EventList.WebApi.Features.Lecturers
             if (lecturer is null)
                 throw new NotFoundException("Lecturer", request.LecturerId);
 
+            foreach (var lecture in lecturer.Lectures)
+            {
+                if (lecture.Lecturers.Count <= 1)
+                    throw new ApplicationErrorException($"Cannot delete because no lecturer would be assigned to lecture {lecture.Name}");
+            }
+
+            lecturer.UnassignLecturerFromAll();
             _context.Lecturers.Remove(lecturer);
             await _context.SaveChangesAsync();
 

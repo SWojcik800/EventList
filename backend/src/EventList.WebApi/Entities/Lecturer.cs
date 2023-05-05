@@ -34,6 +34,15 @@ namespace EventList.WebApi.Entities
 
         public string? Description { get; set; }
 
+        public Event Event { get; set; } = null!;
+
+        public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
+
+        public void UnassignLecturerFromAll()
+        {
+            DomainEvents.Add(new LecturerUnassignedFromAllEvent(Id, Lectures));
+        }
+
         public void UpdateLectures(IList<Lecture> lectures)
         {
             Lectures = lectures;
@@ -43,6 +52,17 @@ namespace EventList.WebApi.Entities
         {
             var normalizedName = _whitespaceRegex.Replace(inputName.Trim(), " ");
             return normalizedName;
+        }
+        public sealed class LecturerUnassignedFromAllEvent : DomainEvent
+        {
+            public int LecturerId { get; }
+            public IList<Lecture> Lectures { get; }
+            public LecturerUnassignedFromAllEvent(int lecturerId, IList<Lecture> lectures) : base()
+            {
+                LecturerId = lecturerId;
+                Lectures = lectures;
+
+            }
         }
     }
 }
