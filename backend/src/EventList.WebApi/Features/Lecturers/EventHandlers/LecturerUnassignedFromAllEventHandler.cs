@@ -4,6 +4,9 @@ using MediatR;
 using static EventList.WebApi.Entities.Lecturer;
 using EventList.WebApi.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using EventList.WebApi.Entities;
+using EventList.WebApi.Common.Exceptions;
+using Azure.Core;
 
 namespace EventList.WebApi.Features.Lecturers.EventHandlers
 {
@@ -23,13 +26,14 @@ namespace EventList.WebApi.Features.Lecturers.EventHandlers
             var domainEvent = notification.DomainEvent;
 
             _logger.LogInformation("Event List Domain Event: {DomainEvent}", domainEvent.GetType().Name);
+            var lecturer = _context.Lecturers.Include(l => l.Lectures).Where(x => x.Id == domainEvent.LecturerId).FirstOrDefault();
 
-            foreach (var lecture in notification.DomainEvent.Lectures)
-            {
-                // TODO: remove lecturer from lectures
-                // fix migrations
-            }
-            
+            if (lecturer is null)
+                throw new NotFoundException("Leturer", domainEvent.LecturerId);
+
+            lecturer.Lectures.Clear();
+
+            _context.SaveChanges();
 
             return Task.CompletedTask;
         }

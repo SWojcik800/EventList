@@ -12,7 +12,7 @@ namespace EventList.WebApi.Entities
         }
 
         private static readonly Regex _whitespaceRegex = new Regex(@"\s+");
-        private string _name;
+        private string? _name;
 
         public Lecturer(string? name, string? description)
         {
@@ -34,13 +34,11 @@ namespace EventList.WebApi.Entities
 
         public string? Description { get; set; }
 
-        public Event Event { get; set; } = null!;
-
         public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
 
         public void UnassignLecturerFromAll()
         {
-            DomainEvents.Add(new LecturerUnassignedFromAllEvent(Id, Lectures));
+            DomainEvents.Add(new LecturerUnassignedFromAllEvent(Id));
         }
 
         public void UpdateLectures(IList<Lecture> lectures)
@@ -48,20 +46,19 @@ namespace EventList.WebApi.Entities
             Lectures = lectures;
         }
 
-        private string NormalizeName(string inputName)
+        private string? NormalizeName(string inputName)
         {
+            if (inputName is null)
+                return null;
             var normalizedName = _whitespaceRegex.Replace(inputName.Trim(), " ");
             return normalizedName;
         }
         public sealed class LecturerUnassignedFromAllEvent : DomainEvent
         {
             public int LecturerId { get; }
-            public IList<Lecture> Lectures { get; }
-            public LecturerUnassignedFromAllEvent(int lecturerId, IList<Lecture> lectures) : base()
+            public LecturerUnassignedFromAllEvent(int lecturerId) : base()
             {
                 LecturerId = lecturerId;
-                Lectures = lectures;
-
             }
         }
     }

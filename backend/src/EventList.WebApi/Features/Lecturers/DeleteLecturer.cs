@@ -53,7 +53,10 @@ namespace EventList.WebApi.Features.Lecturers
 
         public async Task<Unit> Handle(DeleteLecturerCommand request, CancellationToken cancellationToken)
         {
-            var lecturer = await _context.Lecturers.FirstOrDefaultAsync(l => l.Id == request.LecturerId);
+            var lecturer = await _context.Lecturers
+                .Include(x => x.Lectures)
+                .ThenInclude(l => l.Lecturers)
+                .FirstOrDefaultAsync(l => l.Id == request.LecturerId);
 
             if (lecturer is null)
                 throw new NotFoundException("Lecturer", request.LecturerId);
@@ -64,7 +67,6 @@ namespace EventList.WebApi.Features.Lecturers
                     throw new ApplicationErrorException($"Cannot delete because no lecturer would be assigned to lecture {lecture.Name}");
             }
 
-            lecturer.UnassignLecturerFromAll();
             _context.Lecturers.Remove(lecturer);
             await _context.SaveChangesAsync();
 
