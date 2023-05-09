@@ -80,7 +80,7 @@ namespace EventList.WebApi.Features.Lectures
             if (request.LecturersIds is not null)
             {
                 var lecturers = await _context.Lecturers.Where(l => request.LecturersIds.Contains(l.Id))
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
                 var allLecturersFound = lecturers.Count() == request.LecturersIds.Distinct().Count();
 
@@ -110,7 +110,7 @@ namespace EventList.WebApi.Features.Lectures
                 lecture.Description = request.Description;
 
             _context.Update(lecture);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

@@ -113,7 +113,7 @@ namespace EventList.WebApi.Features.Lectures
                 request.Description, @event
              );
 
-            await _context.Lectures.AddAsync(lecture);
+            await _context.Lectures.AddAsync(lecture, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             return lecture.Id;
