@@ -61,7 +61,7 @@ namespace EventList.WebApi.Features.Lecturers
 
         public async Task<Unit> Handle(UpdateLecturerCommand request, CancellationToken cancellationToken)
         {
-            var lecturer = await _context.Lecturers.FirstOrDefaultAsync(l => l.Id == request.LecturerId);
+            var lecturer = await _context.Lecturers.Include(l => l.Lectures).FirstOrDefaultAsync(l => l.Id == request.LecturerId);
 
             if (lecturer is null)
                 throw new NotFoundException("Lecturer", request.LecturerId);
