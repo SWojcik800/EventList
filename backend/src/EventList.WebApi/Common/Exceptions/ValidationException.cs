@@ -18,6 +18,19 @@ namespace EventList.WebApi.Common.Exceptions
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
         }
 
+        public string FormattedValidationErrors()
+        {
+            var validationMessages = new List<string>();
+
+            foreach (var error in Errors)
+            {
+                validationMessages.Add($"{error.Key}: {string.Join("; ", error.Value)}");
+            }
+
+            return string.Join(", ", validationMessages);
+
+        }
+
         public IDictionary<string, string[]> Errors { get; }
     }
 }
