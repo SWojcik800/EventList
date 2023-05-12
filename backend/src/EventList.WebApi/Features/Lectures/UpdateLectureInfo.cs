@@ -69,7 +69,7 @@ namespace EventList.WebApi.Features.Lectures
 
         public async Task<Unit> Handle(UpdateLectureInfoCommand request, CancellationToken cancellationToken)
         {
-            var lecture = await _context.Lectures.FirstOrDefaultAsync(l => l.Id == request.LectureId);
+            var lecture = await _context.Lectures.Include(l => l.Lecturers).FirstOrDefaultAsync(l => l.Id == request.LectureId, cancellationToken: cancellationToken);
 
             if (lecture is null)
                 throw new NotFoundException("Lecture", request.LectureId);
@@ -80,7 +80,7 @@ namespace EventList.WebApi.Features.Lectures
             if (request.LecturersIds is not null)
             {
                 var lecturers = await _context.Lecturers.Where(l => request.LecturersIds.Contains(l.Id))
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
                 var allLecturersFound = lecturers.Count() == request.LecturersIds.Distinct().Count();
 
@@ -110,7 +110,7 @@ namespace EventList.WebApi.Features.Lectures
                 lecture.Description = request.Description;
 
             _context.Update(lecture);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

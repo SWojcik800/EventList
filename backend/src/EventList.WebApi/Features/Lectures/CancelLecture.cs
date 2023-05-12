@@ -53,7 +53,7 @@ namespace EventList.WebApi.Features.Lectures
 
         public async Task<Unit> Handle(CancelLectureCommand request, CancellationToken cancellationToken)
         {
-            var lecture = await _context.Lectures.FirstOrDefaultAsync(l => l.Id == request.LectureId);
+            var lecture = await _context.Lectures.FirstOrDefaultAsync(l => l.Id == request.LectureId, cancellationToken);
 
             if(lecture is null)
                 throw new NotFoundException("Lecture", request.LectureId);
@@ -62,7 +62,7 @@ namespace EventList.WebApi.Features.Lectures
                 throw new ApplicationException("Cannot cancel lecture that has already finished");
 
             _context.Lectures.Remove(lecture);
-            await _context.SaveChangesAsync();    
+            await _context.SaveChangesAsync(cancellationToken);    
             
             return Unit.Value;
         }
