@@ -1,7 +1,11 @@
 ﻿using EventList.WebApi.Common;
+using EventList.WebApi.Common.Exceptions;
 using EventList.WebApi.Common.Interfaces;
 using EventList.WebApi.ValueObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace EventList.WebApi.Entities
 {
@@ -11,6 +15,8 @@ namespace EventList.WebApi.Entities
         {
             //For EF Core 
         }
+
+        private IReadOnlyList<Lecturer> _lecturers = new List<Lecturer>();
 
         public Lecture(
             int eventId,
@@ -24,7 +30,7 @@ namespace EventList.WebApi.Entities
             Event @event)
         {
             EventId = eventId;
-            Lecturers = lecturers;
+            Lecturers = new List<Lecturer>(lecturers);
             Location = location;
             StartTime = startTime;
             EndTime = endTime;
@@ -38,7 +44,15 @@ namespace EventList.WebApi.Entities
 
         public int EventId { get; set; }
 
-        public IList<Lecturer> Lecturers { get; private set; } = new List<Lecturer>();
+        public IReadOnlyList<Lecturer> Lecturers 
+        {
+            get => _lecturers; 
+            set 
+            {
+                ValidateLecturers(value);
+                _lecturers = value;
+            }
+        }
 
         public Location Location { get; set; }
 
@@ -61,7 +75,7 @@ namespace EventList.WebApi.Entities
 
         public void ChangeLecturers(IList<Lecturer> lecturers)
         {
-            Lecturers = lecturers;
+            Lecturers = new List<Lecturer>(lecturers);
             var changedIds = lecturers.Select(l => l.Id)
                 .ToList();
 
@@ -70,11 +84,17 @@ namespace EventList.WebApi.Entities
             ));
         }
 
+        private void ValidateLecturers(IReadOnlyList<Lecturer> lecturers)
+        {
+            if (lecturers.IsNullOrEmpty())
+                throw new ApplicationErrorException($"Cannot set lecturers amount to 0 for lecture {Name}");
+        }
+
     }
 
     public sealed class LecturersChangedEvent : DomainEvent
     {
-        public IReadOnlyCollection<int> LecturersIds { get;}
+        public IReadOnlyCollection<int> LecturersIds { get; }
         public LecturersChangedEvent(IList<int> lecturersIds) : base()
         {
             LecturersIds = new List<int>(lecturersIds) { };
