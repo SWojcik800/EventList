@@ -18,6 +18,16 @@ namespace EventList.WebApi.Common.Behaviors
             {
                 return await next();
             }
+            catch (ValidationException ex)
+            {
+                var requestName = typeof(TRequest).Name;
+
+                _logger.LogError(ex,
+                    "EventList Request: Validation Exception for Request {Name} {@Request} \n Validation Messages: {Messages}",
+                    requestName, request, ex.FormattedValidationErrors());
+
+                throw;
+            }
             catch (Exception ex)
             {
                 var requestName = typeof(TRequest).Name;
