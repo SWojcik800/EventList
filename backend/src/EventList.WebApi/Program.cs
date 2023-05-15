@@ -41,9 +41,9 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseCors();
-
+#if !DEBUG
 app.UseHttpsRedirection();
-
+#endif
 app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
 app.UseAuthorization();
