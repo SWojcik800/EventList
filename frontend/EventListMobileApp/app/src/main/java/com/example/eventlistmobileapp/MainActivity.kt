@@ -1,10 +1,16 @@
 package com.example.eventlistmobileapp
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Paint.Style
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -48,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadTableData() {
 
-        //val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
+
 
         val retrofit = Retrofit.Builder()
             .baseUrl(AppConsts.apiBaseUrl) // Replace with your API base URL
@@ -57,8 +63,32 @@ class MainActivity : AppCompatActivity() {
 
         try {
             val apiService = retrofit.create(ApiService::class.java)
-            val response = apiService.getLectures().execute()
-            print(response)
+            val items = apiService.getLectures().execute().body()?.items
+            val tableLayout = findViewById<TableLayout>(R.id.tableLayout)
+
+            val headerRow = createHeaderTableRow(this, "Lecturers", "Location", "StartTime", "EndTime", "Duration", "Name", "Topic", "Description")
+            headerRow.setBackgroundColor(Color.parseColor("#4834d4"))
+            tableLayout.addView(headerRow)
+
+            items?.forEach { item ->
+                val lectureRow = createTableRow(
+                    this,
+                    item.lecturerNames.joinToString(", "),
+                    "${item.location.country} ${item.location.city} ${item.location.street}",
+                    item.startTime.toString(),
+                    item.endTime.toString(),
+                    item.duration.toString(),
+                    item.name ?: "",
+                    item.topic ?: "",
+                    item.description ?: ""
+                )
+
+                if (tableLayout.childCount % 2 == 0) {
+                    lectureRow.setBackgroundColor(Color.LTGRAY)
+                }
+                tableLayout.addView(lectureRow)
+            }
+
         }
         catch (e: java.lang.Exception)
         {
@@ -68,6 +98,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun createHeaderTableRow(context: Context, vararg columnTexts: String): TableRow {
+        val tableRow = TableRow(context)
+        columnTexts.forEach { text ->
+            val textView = TextView(context)
+            textView.text = text
+            textView.setPadding(2, 2, 2, 2)
+            textView.setTextColor(Color.parseColor("#ffffff"))
+            tableRow.addView(textView)
+        }
+        return tableRow
+    }
+    fun createTableRow(context: Context, vararg columnTexts: String): TableRow {
+        val tableRow = TableRow(context)
+        columnTexts.forEach { text ->
+            val textView = TextView(context)
+            textView.text = text
+            textView.setPadding(2, 2, 2, 2)
+            tableRow.addView(textView)
+        }
+        return tableRow
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
