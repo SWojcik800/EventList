@@ -1,9 +1,10 @@
-package com.example.eventlistmobileapp
+package com.example.eventlistmobileapp.UI
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import com.example.eventlistmobileapp.databinding.CardComponentBinding
 
 class CardComponent @JvmOverloads constructor(
     context: Context,
@@ -11,19 +12,21 @@ class CardComponent @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    private val binding: CardComponentBinding
+
     init {
-        LayoutInflater.from(context).inflate(R.layout.card_component, this, true)
+        binding = CardComponentBinding.inflate(LayoutInflater.from(context), this, true)
     }
 
     fun setTitle(title: String) {
-        cardTitle.text = title
+        binding.cardTitle.text = title
     }
 
     fun setDescription(description: String) {
-        cardDescription.text = description
+        binding.cardDescription.text = description
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        cardContainer.setOnClickListener(listener)
+    fun setCardOnClickListener(listener: OnClickListener) {
+        binding.cardContainer.setOnClickListener(listener)
     }
 }
