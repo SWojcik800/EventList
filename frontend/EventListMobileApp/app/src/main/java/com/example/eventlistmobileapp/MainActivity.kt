@@ -1,6 +1,8 @@
 package com.example.eventlistmobileapp
 
+import android.app.ActionBar.OnNavigationListener
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.StrictMode
@@ -54,9 +56,9 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        //loadTableData()
         loadCards()
     }
+
 
     private fun refreshCards() {
         val containerWrapper = findViewById<LinearLayout>(R.id.cardContainerWrapper)
