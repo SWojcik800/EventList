@@ -12,7 +12,9 @@ import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -87,6 +89,9 @@ class MainActivity : AppCompatActivity() {
             // Set click listener
             cardComponent.setCardOnClickListener {
                 Toast.makeText(this, "${item.name} lecture clicked", Toast.LENGTH_SHORT).show()
+                // Navigate to lecture details fragment
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_FirstFragment_to_SecondFragment)
             }
             containerWrapper.addView(cardComponent)
         }
