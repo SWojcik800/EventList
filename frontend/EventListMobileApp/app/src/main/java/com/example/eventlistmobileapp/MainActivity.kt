@@ -18,7 +18,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.eventlistmobileapp.Commons.ApiService
 import com.example.eventlistmobileapp.Commons.AppConsts
+import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
 import com.example.eventlistmobileapp.UI.CardComponent
+import com.example.eventlistmobileapp.UI.CardComponentItem
 import com.example.eventlistmobileapp.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Retrofit
@@ -72,8 +74,15 @@ class MainActivity : AppCompatActivity() {
         val containerWrapper = findViewById<LinearLayout>(R.id.cardContainerWrapper)
         items?.forEach { item ->
             val cardComponent: CardComponent = CardComponent(this)
-            item.name?.let { cardComponent.setTitle(it) }
-            item.description?.let { cardComponent.setDescription(it) }
+
+            val cardListItems = listOf<CardComponentItem>(
+                CardComponentItem("From", DateFormatter.formatDate(item.startTime)),
+                CardComponentItem("To", DateFormatter.formatDate(item.endTime)),
+                CardComponentItem("Location", item.location.street)
+            )
+
+            cardComponent.setPropertiesFrom(cardListItems)
+                .setTitle("${item.name} - ${item.lecturerNames.joinToString(",")}")
 
             // Set click listener
             cardComponent.setCardOnClickListener {
@@ -81,14 +90,6 @@ class MainActivity : AppCompatActivity() {
             }
             containerWrapper.addView(cardComponent)
         }
-
-
-
-
-        // Set title and description
-
-
-
 
     }
 
