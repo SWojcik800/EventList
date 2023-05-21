@@ -6,18 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SecondFragment">
 
-<!--    <ScrollView-->
-<!--        android:layout_width="412dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:layout_editor_absoluteX="0dp"-->
-<!--        tools:layout_editor_absoluteY="0dp"-->
-<!--        >-->
+    <ScrollView
+        android:layout_width="412dp"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        >
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/eventCardContainerWrapper"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical" />
-    </ScrollView>-->
+        <LinearLayout
+            android:id="@+id/eventCardContainerWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

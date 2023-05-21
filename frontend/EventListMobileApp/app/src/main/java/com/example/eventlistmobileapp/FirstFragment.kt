@@ -92,6 +92,5 @@ class FirstFragment : Fragment() {
             }
             containerWrapper?.addView(cardComponent)
         }
-
     }
 }
