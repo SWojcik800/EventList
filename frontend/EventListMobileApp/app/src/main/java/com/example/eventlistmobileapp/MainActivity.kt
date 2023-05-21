@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             .build()
         val apiService = retrofit.create(ApiService::class.java)
         val items = apiService.getLectures().execute().body()?.items
-
         val containerWrapper = findViewById<LinearLayout>(R.id.cardContainerWrapper)
         items?.forEach { item ->
             val cardComponent: CardComponent = CardComponent(this)
