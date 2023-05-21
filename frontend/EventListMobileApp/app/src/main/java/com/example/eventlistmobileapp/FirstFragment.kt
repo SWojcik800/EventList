@@ -26,7 +26,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
-    // private val _activityBinding = ActivityMainBinding.inflate(layoutInflater)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -45,14 +44,11 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity()
         print(activity.componentName)
+    }
 
-//        _activityBinding.fab.setOnClickListener { view ->
-//            refreshCards()
-//            Snackbar.make(view, "View refreshed", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
-
-        loadCards()
+    override fun onResume() {
+        super.onResume()
+        refreshCards()
     }
 
     override fun onDestroyView() {

@@ -1,34 +1,16 @@
 package com.example.eventlistmobileapp
 
-import android.app.ActionBar.OnNavigationListener
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.eventlistmobileapp.Commons.ApiService
-import com.example.eventlistmobileapp.Commons.AppConsts
-import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
-import com.example.eventlistmobileapp.UI.CardComponent
-import com.example.eventlistmobileapp.UI.CardComponentItem
 import com.example.eventlistmobileapp.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
