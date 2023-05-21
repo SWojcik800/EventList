@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.eventlistmobileapp.Commons.ApiService
 import com.example.eventlistmobileapp.Commons.AppConsts
+import com.example.eventlistmobileapp.Commons.Helpers.ApiHelper
 import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
 import com.example.eventlistmobileapp.UI.CardComponent
 import com.example.eventlistmobileapp.UI.CardComponentItem
@@ -63,11 +64,7 @@ class FirstFragment : Fragment() {
 
     private fun loadCards() {
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(AppConsts.apiBaseUrl) // Replace with your API base URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ApiService::class.java)
+        val apiService = ApiHelper.getApiServiceInstance()
         val items = apiService.getLectures().execute().body()?.items
 
         val containerWrapper = view?.findViewById<LinearLayout>(R.id.cardContainerWrapper)
