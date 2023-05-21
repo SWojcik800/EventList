@@ -34,6 +34,11 @@ class CardComponent @JvmOverloads constructor(
         return this
     }
 
+    fun setDescription(description: String): CardComponent {
+        binding.cardDescription.text = description
+        return this
+    }
+
     fun setCardOnClickListener(listener: OnClickListener) {
         binding.cardContainer.setOnClickListener(listener)
     }

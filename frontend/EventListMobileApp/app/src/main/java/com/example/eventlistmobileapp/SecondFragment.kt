@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.eventlistmobileapp.Commons.ApiService
 import com.example.eventlistmobileapp.Commons.AppConsts
 import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
+import com.example.eventlistmobileapp.Events.Event
 import com.example.eventlistmobileapp.UI.CardComponent
 import com.example.eventlistmobileapp.UI.CardComponentItem
 import com.example.eventlistmobileapp.databinding.FragmentSecondBinding
@@ -32,6 +33,7 @@ class SecondFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var _currentActivity: MainActivity
+    private lateinit var _event: Event
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,8 @@ class SecondFragment : Fragment() {
     ): View? {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _event = arguments?.getSerializable("item") as Event
+
 
         return binding.root
 
@@ -53,6 +57,7 @@ class SecondFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        _event = arguments?.getSerializable("item") as Event
         refreshCards()
     }
 
@@ -69,25 +74,21 @@ class SecondFragment : Fragment() {
 
     private fun loadCards() {
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(AppConsts.apiBaseUrl) // Replace with your API base URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ApiService::class.java)
-        val items = apiService.getLectures().execute().body()?.items
+
+        val items = _event.lectures
 
         val containerWrapper = view?.findViewById<LinearLayout>(R.id.eventCardContainerWrapper)
         items?.forEach { item ->
             val cardComponent: CardComponent = CardComponent(requireContext())
 
             val cardListItems = listOf<CardComponentItem>(
-                CardComponentItem("From", DateFormatter.formatDate(item.startTime)),
-                CardComponentItem("To", DateFormatter.formatDate(item.endTime)),
-                CardComponentItem("Location", item.location.street)
+                CardComponentItem("From", item.startTime?.let { DateFormatter.formatDate(it) }),
+                CardComponentItem("To", item.endTime?.let { DateFormatter.formatDate(it) }),
+                CardComponentItem("Location", item.location)
             )
 
             cardComponent.setPropertiesFrom(cardListItems)
-                .setTitle("${item.name} - ${item.lecturerNames.joinToString(",")}")
+                .setTitle("${item.name} ")
             containerWrapper?.addView(cardComponent)
         }
     }

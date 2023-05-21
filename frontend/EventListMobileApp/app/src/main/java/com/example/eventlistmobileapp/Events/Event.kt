@@ -1,8 +1,10 @@
 package com.example.eventlistmobileapp.Events
 
-data class Event (
+import java.io.Serializable
+
+class Event (
     val id: Integer,
     val name: String?,
     val startDate: String?,
     val lectures: List<EventLecture>
-    )
+    ) : Serializable
