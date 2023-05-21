@@ -80,8 +80,11 @@ class FirstFragment : Fragment() {
             cardComponent.setCardOnClickListener {
                 Toast.makeText(requireContext(), "${item.name} event clicked", Toast.LENGTH_SHORT).show()
                 // Navigate to lecture details fragment
+                val bundle = Bundle()
+                bundle.putSerializable("item", item)
+
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
             }
             containerWrapper?.addView(cardComponent)
         }
