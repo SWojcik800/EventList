@@ -19,17 +19,5 @@
             android:layout_height="match_parent"
             android:orientation="vertical" />
     </ScrollView>
-    <!--
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="*"
-            tools:ignore="MissingConstraints">
-        </TableLayout>
-    !-->
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
