@@ -1,5 +1,6 @@
 package com.example.eventlistmobileapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.eventlistmobileapp.Commons.ApiService
 import com.example.eventlistmobileapp.Commons.AppConsts
 import com.example.eventlistmobileapp.Commons.Helpers.ApiHelper
 import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
+import com.example.eventlistmobileapp.Events.EventLecture
 import com.example.eventlistmobileapp.UI.CardComponent
 import com.example.eventlistmobileapp.UI.CardComponentItem
 import com.example.eventlistmobileapp.databinding.ActivityMainBinding
@@ -65,24 +67,18 @@ class FirstFragment : Fragment() {
     private fun loadCards() {
 
         val apiService = ApiHelper.getApiServiceInstance()
-        val items = apiService.getLectures().execute().body()?.items
+        val items = apiService.getEvents().execute().body()?.events
 
         val containerWrapper = view?.findViewById<LinearLayout>(R.id.cardContainerWrapper)
         items?.forEach { item ->
             val cardComponent: CardComponent = CardComponent(requireContext())
 
-            val cardListItems = listOf<CardComponentItem>(
-                CardComponentItem("From", DateFormatter.formatDate(item.startTime)),
-                CardComponentItem("To", DateFormatter.formatDate(item.endTime)),
-                CardComponentItem("Location", item.location.street)
-            )
-
-            cardComponent.setPropertiesFrom(cardListItems)
-                .setTitle("${item.name} - ${item.lecturerNames.joinToString(",")}")
+            cardComponent.setTitle("${item.name}")
+                .setDescription("${item.startDate?.let { DateFormatter.formatDate(it) }}")
 
             // Set click listener
             cardComponent.setCardOnClickListener {
-                Toast.makeText(requireContext(), "${item.name} lecture clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${item.name} event clicked", Toast.LENGTH_SHORT).show()
                 // Navigate to lecture details fragment
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main)
                     .navigate(R.id.action_FirstFragment_to_SecondFragment)
