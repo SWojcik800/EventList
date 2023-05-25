@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:id="@+id/cardContainer"
-        android:layout_width="389dp"
-        android:layout_height="117dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:background="@drawable/card_background"
         android:orientation="vertical"
         android:padding="16dp">
@@ -38,6 +38,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp" />
+
+                <ListView
+                    android:id="@+id/cardDetailsListItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="70pt"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
