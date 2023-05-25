@@ -18,6 +18,7 @@ import com.example.eventlistmobileapp.Commons.Helpers.DateFormatter
 import com.example.eventlistmobileapp.Events.Event
 import com.example.eventlistmobileapp.UI.CardComponent
 import com.example.eventlistmobileapp.UI.CardComponentItem
+import com.example.eventlistmobileapp.UI.CardDetailsComponent
 import com.example.eventlistmobileapp.databinding.FragmentSecondBinding
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -79,7 +80,7 @@ class SecondFragment : Fragment() {
 
         val containerWrapper = view?.findViewById<LinearLayout>(R.id.eventCardContainerWrapper)
         items?.forEach { item ->
-            val cardComponent: CardComponent = CardComponent(requireContext())
+            val cardDetailsComponent: CardDetailsComponent = CardDetailsComponent(requireContext())
 
             val cardListItems = listOf<CardComponentItem>(
                 CardComponentItem("From", item.startTime?.let { DateFormatter.formatDate(it) }),
@@ -87,9 +88,9 @@ class SecondFragment : Fragment() {
                 CardComponentItem("Location", item.location)
             )
 
-            cardComponent.setPropertiesFrom(cardListItems)
+            cardDetailsComponent.setPropertiesFrom(cardListItems)
                 .setTitle("${item.name} ")
-            containerWrapper?.addView(cardComponent)
+            containerWrapper?.addView(cardDetailsComponent)
         }
     }
 }
