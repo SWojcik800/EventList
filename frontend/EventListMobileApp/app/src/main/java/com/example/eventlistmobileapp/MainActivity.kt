@@ -1,11 +1,15 @@
 package com.example.eventlistmobileapp
 
+import android.app.UiModeManager.MODE_NIGHT_NO
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -36,6 +40,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val sw = menu.findItem(R.id.switch_action_bar).actionView!!.findViewById<Switch>(R.id.themeSwitchBtn)
+            .setOnCheckedChangeListener { compoundButton, isChecked ->
+                if(isChecked)
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+                else
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+            }
+
+
+
         return true
     }
 
@@ -44,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            //R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
