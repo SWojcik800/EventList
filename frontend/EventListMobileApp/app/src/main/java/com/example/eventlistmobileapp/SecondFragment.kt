@@ -1,6 +1,7 @@
 package com.example.eventlistmobileapp
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager.OnActivityResultListener
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.eventlistmobileapp.Commons.ApiService
@@ -22,6 +24,7 @@ import com.example.eventlistmobileapp.UI.CardDetailsComponent
 import com.example.eventlistmobileapp.databinding.FragmentSecondBinding
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -73,6 +76,7 @@ class SecondFragment : Fragment() {
         loadCards()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadCards() {
 
 
@@ -84,7 +88,7 @@ class SecondFragment : Fragment() {
 
             val cardListItems = listOf<CardComponentItem>(
                 CardComponentItem("From", item.startTime?.let { DateFormatter.formatDate(it) }),
-                CardComponentItem("To", item.endTime?.let { DateFormatter.formatDate(it) }),
+                CardComponentItem("Duration", "${(60..120).random()} min" ),
                 CardComponentItem("Location", item.location)
             )
 
