@@ -88,7 +88,7 @@ class SecondFragment : Fragment() {
 
             val cardListItems = listOf<CardComponentItem>(
                 CardComponentItem("From", item.startTime?.let { DateFormatter.formatDate(it) }),
-                CardComponentItem("Duration", "${(60..120).random()} min" ),
+                CardComponentItem("Duration", "${item.name?.length?.times(10)} min" ),
                 CardComponentItem("Location", item.location)
             )
 
